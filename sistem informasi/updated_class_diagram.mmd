@@ -1,0 +1,74 @@
+classDiagram
+    direction TB
+    
+    class User {
+        +int id
+        +string name
+        +string email
+        +string password
+        +string role
+        +string alamat
+        +login()
+        +logout()
+        +registrasi()
+    }
+
+    class Kategori {
+        +int id
+        +string nama_kategori
+        +text deskripsi
+        +tambahKategori()
+        +editKategori()
+        +hapusKategori()
+    }
+
+    class Produk {
+        +int id
+        +int kategori_id
+        +string nama_produk
+        +text deskripsi
+        +int harga
+        +int stok
+        +string image
+        +tambahProduk()
+        +editProduk()
+        +hapusProduk()
+        +updateStok()
+    }
+
+    class Pesanan {
+        +int id
+        +int user_id
+        +datetime tanggal_pesanan
+        +string status_pesanan
+        +string metode_pembayaran
+        +string jasa_pengiriman
+        +text alamat_pengiriman
+        +buatPesanan()
+        +lihatPesanan()
+    }
+
+    class DetailPesanan {
+        +int id
+        +int pesanan_id
+        +int produk_id
+        +int jumlah
+        +int subtotal
+        +tambahDetail()
+    }
+
+    class Transaksi {
+        +int id
+        +int pesanan_id
+        +datetime tanggal_transaksi
+        +int total_harga
+        +string status_transaksi
+        +prosesTransaksi()
+        +cetakNota()
+    }
+
+    Kategori "1" --> "*" Produk : memiliki
+    User "1" --> "*" Pesanan : melakukan
+    Pesanan "1" --> "*" DetailPesanan : terdiri dari
+    Produk "1" --> "*" DetailPesanan : item pesanan
+    Pesanan "1" --> "1" Transaksi : diproses di
