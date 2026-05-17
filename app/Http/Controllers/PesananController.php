@@ -34,9 +34,8 @@ class PesananController extends Controller
         $request->validate([
             'produk_id'         => 'required|exists:produk,id',
             'jumlah'            => 'required|integer|min:1',
-            'metode_pembayaran' => 'required|string',
-            'jasa_pengiriman'   => 'required|string',
             'alamat_pengiriman' => 'required|string',
+            'bukti_pembayaran'  => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $produk = Produk::findOrFail($request->produk_id);
@@ -45,13 +44,19 @@ class PesananController extends Controller
             return back()->with('error', "Stok tidak mencukupi. Stok tersedia: {$produk->stok}");
         }
 
+        $buktiPath = null;
+        if ($request->hasFile('bukti_pembayaran')) {
+            $buktiPath = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+        }
+
         $pesanan = Pesanan::create([
             'user_id'           => auth()->id(),
             'tanggal_pesanan'   => now(),
             'status_pesanan'    => 'pending',
-            'metode_pembayaran' => $request->metode_pembayaran,
-            'jasa_pengiriman'   => $request->jasa_pengiriman,
+            'metode_pembayaran' => 'Transfer Bank',
+            'jasa_pengiriman'   => 'Diatur oleh Toko',
             'alamat_pengiriman' => $request->alamat_pengiriman,
+            'bukti_pembayaran'  => $buktiPath,
         ]);
 
         DetailPesanan::create([

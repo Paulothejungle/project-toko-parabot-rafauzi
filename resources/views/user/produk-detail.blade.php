@@ -58,7 +58,7 @@
 
             {{-- FORM PEMESANAN --}}
             @if($produk->stok > 0)
-            <form action="/pesan" method="POST" class="order-form-box">
+            <form action="/pesan" method="POST" class="order-form-box" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="produk_id" value="{{ $produk->id }}">
                 
@@ -71,28 +71,21 @@
                     </div>
                 </div>
 
-                <div style="margin-bottom:16px;">
-                    <label for="metode_pembayaran" class="qty-label">Metode Pembayaran</label>
-                    <select name="metode_pembayaran" id="metode_pembayaran" class="qty-input" style="width:100%; padding:12px; border-radius:10px; font-size:14px; outline:none; appearance:none; cursor:pointer;" required>
-                        <option value="Transfer Bank">💳 Transfer Bank (Verifikasi Manual)</option>
-                        <option value="COD">📦 Bayar di Tempat (COD)</option>
-                    </select>
+                <div style="margin-bottom:16px; padding:12px; background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.2); border-radius:10px;">
+                    <div style="font-size:13px; font-weight:600; color:#8b5cf6; margin-bottom:4px;">💳 Informasi Pembayaran</div>
+                    <div style="font-size:14px; color:#e8e9f5;">Transfer ke Rekening BCA: <strong>1234567890</strong> a.n Toko Parabot Rafauzi</div>
+                    <div style="font-size:12px; color:#a5b4fc; margin-top:6px;">*Pengiriman akan diatur langsung oleh pihak toko setelah pembayaran dikonfirmasi.</div>
                 </div>
 
                 <div style="margin-bottom:16px;">
-                    <label for="jasa_pengiriman" class="qty-label">Jasa Pengiriman</label>
-                    <select name="jasa_pengiriman" id="jasa_pengiriman" class="qty-input" style="width:100%; padding:12px; border-radius:10px; font-size:14px; outline:none; appearance:none; cursor:pointer;" required>
-                        <option value="" disabled selected>Pilih Jasa Pengiriman</option>
-                        <option value="JNT">JNT</option>
-                        <option value="JNE">JNE</option>
-                        <option value="SiCepat">SiCepat</option>
-                    </select>
+                    <label for="bukti_pembayaran" class="qty-label">Unggah Bukti Transfer</label>
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="qty-input" style="width:100%; padding:10px; border-radius:10px; font-size:14px; outline:none;" accept="image/*" required>
+                    <div style="font-size:12px; color:#6e70a0; margin-top:4px;">Silakan unggah foto/screenshot bukti transfer (Maks 2MB).</div>
                 </div>
 
                 <div style="margin-bottom:24px;">
                     <label for="alamat_pengiriman" class="qty-label">Alamat Pengiriman</label>
                     <textarea name="alamat_pengiriman" id="alamat_pengiriman" rows="3" class="qty-input" style="width:100%; padding:12px; border-radius:10px; font-size:14px; outline:none; resize:none; line-height:1.5;" placeholder="Cantumkan detail alamat rumah Anda..." required>{{ auth()->user()->alamat }}</textarea>
-                    <div style="font-size:12px; color:#6e70a0; margin-top:4px;">Diambil otomatis dari <a href="/profile" style="color:#6366f1;">Profil Saya</a>. Boleh diganti sesuai kebutuhan.</div>
                 </div>
 
                 <button type="submit" class="btn-checkout">

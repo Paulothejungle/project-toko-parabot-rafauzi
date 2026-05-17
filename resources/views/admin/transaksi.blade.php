@@ -80,7 +80,14 @@
         {{-- Logistik Detail Admin --}}
         <div style="margin-top:10px; padding:10px 12px; background:rgba(255,255,255,0.02); border:0.5px dashed rgba(255,255,255,0.08); border-radius:8px;">
           <div style="font-size:11px; color:#fbbf24; font-weight:600; margin-bottom:4px; text-transform:uppercase;">💳 {{ $p->metode_pembayaran ?? 'Manual' }}</div>
-          <div style="font-size:12px; color:#a5b4fc; line-height:1.4;">📍 {{ $p->alamat_pengiriman ?? 'Belum ada alamat kirim.' }}</div>
+          <div style="font-size:12px; color:#a5b4fc; line-height:1.4; margin-bottom: 4px;">📍 {{ $p->alamat_pengiriman ?? 'Belum ada alamat kirim.' }}</div>
+          @if($p->bukti_pembayaran)
+            <div style="font-size:12px;">
+              <a href="{{ asset('storage/'.$p->bukti_pembayaran) }}" target="_blank" style="color:#4ade80; text-decoration:underline;">Lihat Bukti Pembayaran</a>
+            </div>
+          @else
+            <div style="font-size:12px; color:#ef4444;">Belum ada bukti pembayaran</div>
+          @endif
         </div>
       </div>
     </div>

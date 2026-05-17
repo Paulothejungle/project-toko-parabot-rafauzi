@@ -84,6 +84,12 @@
           <span style="font-size:11px; color:var(--muted); font-weight:500;">📍 Alamat</span>
           <span style="font-size:12px; color:var(--text); text-align:right; line-height:1.4;">{{ $p->alamat_pengiriman ?? 'Belum ada data alamat.' }}</span>
         </div>
+        @if($p->bukti_pembayaran)
+        <div style="display:flex; justify-content:space-between; gap:16px; margin-top:8px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.1);">
+          <span style="font-size:11px; color:var(--muted); font-weight:500;">📄 Bukti Pembayaran</span>
+          <a href="{{ asset('storage/'.$p->bukti_pembayaran) }}" target="_blank" style="font-size:12px; color:#8b5cf6; text-decoration:none; font-weight:600;">Lihat Bukti</a>
+        </div>
+        @endif
       </div>
 
     </div>
