@@ -211,11 +211,11 @@
         </div>
       </div>
 
-      {{-- Tengah: Subtotal --}}
+      {{-- Tengah: Total dari Transaksi (akurat untuk multi-item) --}}
       <div style="text-align:center; padding:0 20px; flex-shrink:0;">
         <div style="font-size:10px; color:#3d3f52; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Total</div>
         <div style="font-family:'Sora',sans-serif; font-size:16px; font-weight:700; color:#a5b4fc;">
-          Rp {{ number_format($detail?->subtotal ?? 0, 0, ',', '.') }}
+          Rp {{ number_format($p->transaksi?->total_harga ?? $detail?->subtotal ?? 0, 0, ',', '.') }}
         </div>
       </div>
 
