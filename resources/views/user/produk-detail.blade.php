@@ -5,7 +5,7 @@
 @section('content')
 
 <div style="margin-bottom: 24px;">
-    <a href="/produk-user" style="display:inline-flex; align-items:center; gap:6px; color:#a5b4fc; text-decoration:none; font-size:14px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#e8e9f5'" onmouseout="this.style.color='#a5b4fc'">
+    <a href="/pengguna/produk" style="display:inline-flex; align-items:center; gap:6px; color:#a5b4fc; text-decoration:none; font-size:14px; font-weight:500; transition:color 0.2s;" onmouseover="this.style.color='#e8e9f5'" onmouseout="this.style.color='#a5b4fc'">
         <span>←</span> Kembali ke Katalog
     </a>
 </div>

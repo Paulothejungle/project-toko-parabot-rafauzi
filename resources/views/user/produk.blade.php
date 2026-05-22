@@ -14,30 +14,74 @@
   </p>
 </div>
 
-{{-- SEARCH & FILTER --}}
-<div style="display:flex; align-items:center; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+{{-- SEARCH & FILTER (Server-side + Client-side hybrid) --}}
+<form id="searchForm" method="GET" action="{{ route('produk.index') }}"
+  style="display:flex; align-items:center; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+
+  {{-- Search input --}}
   <div style="display:flex; align-items:center; gap:8px;
     background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.09);
-    border-radius:10px; padding:0 14px; flex:1; min-width:200px;">
-    <span style="font-size:14px; color:#3d3f52;">🔍</span>
-    <input type="text" id="searchInput" placeholder="Cari produk..." oninput="filterProduk()"
+    border-radius:10px; padding:0 14px; flex:1; min-width:200px;
+    transition: border-color 0.2s;"
+    id="searchWrap">
+    <span style="font-size:14px; color:#6366f1;">🔍</span>
+    <input type="text" name="search" id="searchInput"
+      value="{{ $search }}"
+      placeholder="Cari nama produk..."
+      oninput="clientFilter()"
       style="background:none; border:none; outline:none; font-size:13.5px; color:#e8e9f5;
              font-family:'Plus Jakarta Sans',sans-serif; padding:11px 0; width:100%;">
+    @if($search)
+      <a href="{{ url('/pengguna/produk') }}{{ $katId ? '?kategori='.$katId : '' }}"
+         style="font-size:11px; color:#6e70a0; text-decoration:none; white-space:nowrap;"
+         title="Hapus pencarian">✕</a>
+    @endif
   </div>
-  <select id="filterKat" onchange="filterProduk()"
+
+  {{-- Filter Kategori --}}
+  <select name="kategori" id="filterKat" onchange="this.form.submit()"
     style="background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.09);
            border-radius:10px; padding:10px 14px; font-size:13px; color:#8889a4;
-           font-family:'Plus Jakarta Sans',sans-serif; outline:none; cursor:pointer; appearance:none;
-           min-width:160px;">
+           font-family:'Plus Jakarta Sans',sans-serif; outline:none; cursor:pointer;
+           appearance:none; min-width:160px;">
     <option value="">Semua Kategori</option>
     @foreach($kategoriList as $kat)
-      <option value="{{ strtolower($kat) }}">{{ $kat }}</option>
+      <option value="{{ $kat->id }}" {{ $katId == $kat->id ? 'selected' : '' }}>
+        {{ $kat->nama_kategori }}
+      </option>
     @endforeach
   </select>
-  <span id="produkCount" style="font-size:12px; color:#3d3f52; white-space:nowrap;">
-    {{ $produk->count() }} produk
-  </span>
-</div>
+
+  {{-- Tombol Cari --}}
+  <button type="submit"
+    style="padding:10px 18px; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+           border:none; border-radius:10px; color:#fff; font-size:13px; font-weight:600;
+           cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif;
+           transition:opacity 0.15s; white-space:nowrap;">
+    Cari
+  </button>
+
+  {{-- Info hasil --}}
+  <div style="display:flex; align-items:center; gap:8px; width:100%;">
+    <span id="produkCount" style="font-size:12px; color:#6e70a0;">
+      @if($search || $katId)
+        Ditemukan <strong style="color:#a5b4fc;">{{ $produk->count() }}</strong> produk
+        @if($search) untuk "<strong style="color:#e8e9f5;">{{ $search }}</strong>"@endif
+        @if($katId) kategori "<strong style="color:#e8e9f5;">{{ $kategoriList->firstWhere('id', $katId)?->nama_kategori }}</strong>"@endif
+      @else
+        Menampilkan <strong style="color:#a5b4fc;">{{ $produk->count() }}</strong> produk
+      @endif
+    </span>
+    @if($search || $katId)
+      <a href="{{ url('/pengguna/produk') }}"
+         style="font-size:11px; color:#6366f1; text-decoration:none; border:0.5px solid rgba(99,102,241,0.3);
+                padding:3px 9px; border-radius:6px;">
+        Reset Filter
+      </a>
+    @endif
+  </div>
+
+</form>
 
 {{-- PRODUCT GRID --}}
 <div id="produkGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px;">
@@ -176,20 +220,36 @@
 
 {{-- SCRIPT --}}
 <script>
-  function filterProduk() {
-    const q   = document.getElementById('searchInput').value.toLowerCase();
-    const kat = document.getElementById('filterKat').value.toLowerCase();
+  // Client-side instant filter (visual while typing) — server handles the real query
+  function clientFilter() {
+    const q    = document.getElementById('searchInput').value.toLowerCase();
     const cards = document.querySelectorAll('.produk-card');
-    let count = 0;
+    let count  = 0;
     cards.forEach(c => {
       const nm = c.dataset.nama || '';
-      const kt = c.dataset.kat  || '';
-      const show = nm.includes(q) && (!kat || kt === kat);
+      const show = nm.includes(q);
       c.style.display = show ? '' : 'none';
       if (show) count++;
     });
-    document.getElementById('produkCount').textContent = count + ' produk';
+    document.getElementById('produkCount').textContent = count + ' produk ditemukan';
   }
+
+  // Submit form on Enter key in search input
+  document.getElementById('searchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('searchForm').submit();
+    }
+  });
+
+  // Highlight search input on focus
+  const wrap = document.getElementById('searchWrap');
+  document.getElementById('searchInput').addEventListener('focus', () => {
+    wrap.style.borderColor = 'rgba(99,102,241,0.5)';
+  });
+  document.getElementById('searchInput').addEventListener('blur', () => {
+    wrap.style.borderColor = 'rgba(255,255,255,0.09)';
+  });
 </script>
 
 @endsection

@@ -105,6 +105,16 @@
         <div style="text-align:center;">
           <div style="font-size:24px; margin-bottom:4px;">✅</div>
           <div style="font-size:11px; color:#4ade80; font-weight:500;">Transaksi<br>Selesai</div>
+          <a href="{{ route('pesanan.invoice', $p->id) }}"
+             style="display:inline-flex; align-items:center; gap:4px; margin-top:8px;
+                    padding:6px 12px; border-radius:8px;
+                    background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.3);
+                    color:#a5b4fc; font-size:11px; font-weight:600; text-decoration:none;
+                    transition:all 0.15s;"
+             onmouseover="this.style.background='rgba(99,102,241,0.25)'"
+             onmouseout="this.style.background='rgba(99,102,241,0.12)'">
+            📄 Unduh Invoice
+          </a>
         </div>
       @endif
     </div>
@@ -115,7 +125,7 @@
   <div style="font-size:56px; margin-bottom:16px;">📋</div>
   <div style="font-size:16px; font-weight:600; color:#6e70a0; margin-bottom:8px;">Belum ada pesanan</div>
   <div style="font-size:13px; color:#3d3f52; margin-bottom:20px;">Yuk mulai belanja produk kami!</div>
-  <a href="/produk-user" style="display:inline-flex; align-items:center; gap:7px;
+  <a href="/pengguna/produk" style="display:inline-flex; align-items:center; gap:7px;
     padding:10px 20px; border-radius:10px;
     background:linear-gradient(135deg,#6366f1,#8b5cf6);
     color:#fff; font-size:13px; font-weight:600; text-decoration:none;

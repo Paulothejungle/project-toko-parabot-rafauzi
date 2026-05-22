@@ -41,6 +41,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/transaksi', [TransaksiController::class, 'index']);
     Route::post('/transaksi/proses/{id}', [TransaksiController::class, 'proses']);
+
+    // Invoice hanya bisa diakses admin
+    Route::get('/transaksi/invoice/{id}', [TransaksiController::class, 'invoice'])->name('transaksi.invoice');
 });
 
 // ===== PENGGUNA =====
@@ -48,19 +51,19 @@ Route::middleware(['auth', 'role:pengguna'])->group(function () {
 
     Route::get('/pengguna/dashboard', [DashboardController::class, 'pengguna']);
 
-    Route::get('/produk-user', [PesananController::class, 'index']);
+    Route::get('/pengguna/produk', [PesananController::class, 'index'])->name('produk.index');
     Route::get('/pengguna/produk/{id}', [PesananController::class, 'show'])->name('produk.detail');
     Route::post('/pesan', [PesananController::class, 'store']);
     Route::get('/riwayat', [PesananController::class, 'riwayat']);
+    Route::get('/pesanan/invoice/{id}', [PesananController::class, 'invoice'])->name('pesanan.invoice');
 });
 
 // ===== OWNER =====
 Route::middleware(['auth', 'role:owner'])->group(function () {
-
     Route::get('/owner/dashboard', [DashboardController::class, 'owner']);
-
-    Route::get('/laporan', [LaporanController::class, 'index']);
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/stok', [LaporanController::class, 'stok'])->name('laporan.stok');
+    Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.pdf');
 });
 
 require __DIR__.'/auth.php';

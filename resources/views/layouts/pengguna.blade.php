@@ -232,8 +232,8 @@
     </a>
 
     <div class="nav-links">
-      <a href="/produk-user"
-         class="nav-link {{ request()->is('produk-user') ? 'active' : '' }}">
+      <a href="/pengguna/produk"
+         class="nav-link {{ request()->is('pengguna/produk') ? 'active' : '' }}">
         🛍 Produk
       </a>
       <a href="/riwayat"

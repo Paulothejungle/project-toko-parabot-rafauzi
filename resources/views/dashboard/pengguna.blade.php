@@ -16,7 +16,7 @@
     </p>
 
     <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap;">
-      <a href="/produk-user" class="btn-primary">
+      <a href="/pengguna/produk" class="btn-primary">
         🛍 Mulai Belanja
       </a>
       <a href="/riwayat" class="btn-secondary">
